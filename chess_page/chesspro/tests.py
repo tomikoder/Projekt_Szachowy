@@ -11,7 +11,6 @@ possible_errors = {1: 'Zła pozycja figury szachowej.',
                    9: 'Liczba argumentów jest nie wystarczająca, lub jest za duża.'
                    }
 
-
 class SimpleTest(SimpleTestCase):
     def test_list_moves_papwn(self):
         response = self.client.get('/api/v1/pawn/a2/')

@@ -1,4 +1,4 @@
-from .chess import Chess_Board, ChessException, ChessException_2, ChessException_5
+from .chess import Chess_Board
 from django.http import JsonResponse, HttpResponse
 from .errors import *
 

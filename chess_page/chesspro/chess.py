@@ -1,9 +1,16 @@
 from typing import Tuple, List, Type, Iterable
 
-if __name__ == "__main__":
-    from errors import *
-else:
-    from .errors import *
+from .errors import (
+    ChessException,
+    ChessException_1,
+    ChessException_2,
+    ChessException_3,
+    ChessException_4,
+    ChessException_5,
+    ChessException_6,
+    ChessException_7,
+    ChessException_8,
+)
 
 possible_errors = {
     1: "Zła pozycja figury szachowej.",
@@ -61,10 +68,12 @@ class Figure:
         else:
             self.colour: str = colour
 
-    def list_available_moves(self, chess_board: Tuple[List["Figure"]]) -> List[str]:
-        """Używam własnej notacji dla nazw metod sprawdzających możliwe
-         ruchy figury. Każda nazwa powinna się zaczynać od "figure_move_".
-         Dzięki czemu można je wszystkie bezproblemu wywołać.
+    def list_available_moves(
+            self, chess_board: Tuple[List["Figure"]]) -> List[str]:
+        """Używam własnej notacji dla nazw metod sprawdzających
+           możliweruchy figury. Każda nazwa powinna się zaczynać
+           od "figure_move_". Dzięki czemu można je wszystkie
+           bezproblemu wywołać.
         """
         data = Data()
         move_methods = [
@@ -77,8 +86,9 @@ class Figure:
     def validate_move(
         self, chess_board: Tuple[List["Figure"]], dest_position: str
     ) -> bool:
-        """Używam prostego rozwiąznia by sprawdzić czy figura może się poruszyć na dane pole.
-        Nie jest wydajne, ale jest bardzo proste.
+        """Używam prostego rozwiąznia by sprawdzić czy figura może
+           się poruszyć na dane pole. Nie jest wydajne, ale jest
+           bardzo proste.
         """
         data_set: List[str] = self.list_available_moves(chess_board)
         if dest_position.lower() in data_set:
@@ -174,7 +184,8 @@ class Rook(Figure):
             if counter_y_up == 8:
                 break
             elif chess_board[letter_position][counter_y_up] is None:
-                data.append(self.alphabed[letter_position] + str(counter_y_up + 1))
+                data.append(
+                    self.alphabed[letter_position] + str(counter_y_up + 1))
                 counter_y_up += 1
             else:
                 break
@@ -184,7 +195,8 @@ class Rook(Figure):
             if counter_y_down == -1:
                 break
             elif chess_board[letter_position][counter_y_down] is None:
-                data.append(self.alphabed[letter_position] + str(counter_y_down + 1))
+                data.append(
+                    self.alphabed[letter_position] + str(counter_y_down + 1))
                 counter_y_down -= 1
             else:
                 break
@@ -290,7 +302,8 @@ class Bishop(Figure):
             if counter_x_right == 8 or counter_y_up == 8:
                 break
             elif chess_board[counter_x_right][counter_y_up] is None:
-                data.append(self.alphabed[counter_x_right] + str(counter_y_up + 1))
+                data.append(
+                    self.alphabed[counter_x_right] + str(counter_y_up + 1))
                 counter_y_up += 1
                 counter_x_right += 1
             else:
@@ -302,7 +315,8 @@ class Bishop(Figure):
             if counter_x_right == 8 or counter_y_down == -1:
                 break
             elif chess_board[counter_x_right][counter_y_down] is None:
-                data.append(self.alphabed[counter_x_right] + str(counter_y_down + 1))
+                data.append(
+                    self.alphabed[counter_x_right] + str(counter_y_down + 1))
                 counter_x_right += 1
                 counter_y_down -= 1
             else:
@@ -314,7 +328,8 @@ class Bishop(Figure):
             if counter_x_left == -1 or counter_y_down == -1:
                 break
             elif chess_board[counter_x_left][counter_y_down] is None:
-                data.append(self.alphabed[counter_x_left] + str(counter_y_down + 1))
+                data.append(
+                    self.alphabed[counter_x_left] + str(counter_y_down + 1))
                 counter_x_left -= 1
                 counter_y_down -= 1
             else:
@@ -326,7 +341,8 @@ class Bishop(Figure):
             if counter_x_left == -1 or counter_y_up == 8:
                 break
             elif chess_board[counter_x_left][counter_y_up] is None:
-                data.append(self.alphabed[counter_x_left] + str(counter_y_up + 1))
+                data.append(
+                    self.alphabed[counter_x_left] + str(counter_y_up + 1))
                 counter_x_left -= 1
                 counter_y_up += 1
             else:
@@ -378,7 +394,8 @@ class King(Figure):
             number_position + 1,
         ]
 
-        # Usuwam wszystkie skrajne pozycje, które mogą przekraczać dopuszczalne pola szachownicy.
+        # Usuwam wszystkie skrajne pozycje, które mogą przekraczać
+        # dopuszczalne pola szachownicy.
         if possible_moves_in_left_right[0] == -1:
             del possible_moves_in_left_right[0]
         elif possible_moves_in_left_right[1] == 8:
@@ -412,18 +429,23 @@ class Chess_Board:
     }
     letters = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8}
 
-    def __init__(self, custom: bool = False, chessmans: Iterable[Figure] = None):
-        """Możesz tworzyć szachownicę z własnymi ustawieniami pionków. Musisz podać dwa dodatkowe argumenty do inicjatora klasy, "custom" ustawić na True, i
-        jako "chessmans" podać sekwencyjną strukturę danych, która zawiera instancję figur z wszystkimi potrzebnymi danymi.
+    def __init__(self, custom: bool = False,
+                 chessmans: Iterable[Figure] = None):
+        """Możesz tworzyć szachownicę z własnymi ustawieniami
+           pionków. Musisz podać dwa dodatkowe argumenty do
+           inicjatora klasy, "custom" ustawić na True, i jako
+           "chessmans" podać sekwencyjną strukturę danych,
+           która zawiera instancję figur z wszystkimi
+           potrzebnymi danymi.
         """
         self.board = tuple([None for i2 in range(8)] for i1 in range(8))
-        if custom == False:
+        if custom is False:
             for Figure_Type in self.figure_options.values():
                 for (x, y) in Figure_Type.start_positions_for_white:
                     self.board[x][y] = Figure_Type(field=(x, y), colour="w")
                 for (x, y) in Figure_Type.start_positions_for_black:
                     self.board[x][y] = Figure_Type(field=(x, y), colour="b")
-        elif custom == True and chessmans:
+        elif custom is True and chessmans:
             for chm in chessmans:
                 x, y = chm.field[0], chm.field[1]
                 self.board[x][y] = chm
@@ -433,10 +455,12 @@ class Chess_Board:
 
     @classmethod
     def validate_position(cls, position: str) -> Tuple["int"]:
-        if len(position) != 2 or not position[0].isalpha or not position[1].isnumeric:
+        if (len(position) != 2
+                or not position[0].isalpha or not position[1].isnumeric):
             error = ChessException_4(possible_errors[4])
             raise error
-        letter_position, number_position = position[0].lower(), int(position[1])
+        letter_position = position[0].lower()
+        number_position = int(position[1])
         if letter_position not in cls.letters.keys():
             raise ChessException_5(possible_errors[5])
         else:
@@ -456,7 +480,8 @@ class Chess_Board:
         else:
             Figure_Type: Type[Figure] = self.figure_options[figure_name]
         figure_to_check: Figure = self.board[letter_position][number_position]
-        if (figure_to_check is None) or not isinstance(figure_to_check, Figure_Type):
+        if (figure_to_check is None) or not\
+                isinstance(figure_to_check, Figure_Type):
             error = ChessException_8(possible_errors[8])
             raise error
         return figure_to_check
@@ -473,7 +498,8 @@ class Chess_Board:
         figure_to_check: Figure = self.get_figure(
             figure_name, letter_position, number_position
         )
-        result_data: bool = figure_to_check.validate_move(self.board, dest_position)
+        result_data: bool = figure_to_check.validate_move(
+            self.board, dest_position)
         return result_data
 
     def move_options(self, figure_name: str, position: str) -> List[str]:
@@ -481,7 +507,8 @@ class Chess_Board:
         figure_to_check: Figure = self.get_figure(
             figure_name, letter_position, number_position
         )
-        result_data: List[str] = figure_to_check.list_available_moves(self.board)
+        result_data: List[str] =\
+            figure_to_check.list_available_moves(self.board)
         return result_data
 
     def show_board(self) -> None:
@@ -499,11 +526,10 @@ class Chess_Board:
         print(txt)
 
 
-# mapping_index = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
-
-
 def get_chess_field(pos: str) -> Tuple[int]:
-    """Podaj stringę np A1, by dostać odpowiednią pozycje figry na szachownicy"""
+    """Podaj stringę np A1, by dostać odpowiednią
+       pozycje figry na szachownicy
+    """
     return Chess_Board.validate_position(pos)
 
 
