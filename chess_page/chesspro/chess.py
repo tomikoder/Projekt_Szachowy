@@ -71,7 +71,7 @@ class Figure:
     def list_available_moves(
             self, chess_board: Tuple[List["Figure"]]) -> List[str]:
         """Używam własnej notacji dla nazw metod sprawdzających
-           możliweruchy figury. Każda nazwa powinna się zaczynać
+           możliwe ruchy figury. Każda nazwa powinna się zaczynać
            od "figure_move_". Dzięki czemu można je wszystkie
            bezproblemu wywołać.
         """
@@ -268,9 +268,8 @@ class Knight(Figure):
                 new_x < 0 or new_y < 0
             ):  # Sprawdzam czy figura nie jest poza planszą
                 continue
-            else:
-                if chess_board[new_x][new_y] is None:
-                    data.append(self.alphabed[new_x] + str(new_y + 1))
+            if chess_board[new_x][new_y] is None:
+                data.append(self.alphabed[new_x] + str(new_y + 1))
 
     def __str__(self):
         if self.colour == "w":
@@ -481,7 +480,7 @@ class Chess_Board:
             Figure_Type: Type[Figure] = self.figure_options[figure_name]
         figure_to_check: Figure = self.board[letter_position][number_position]
         if (figure_to_check is None) or not\
-                isinstance(figure_to_check, Figure_Type):
+            isinstance(figure_to_check, Figure_Type):
             error = ChessException_8(possible_errors[8])
             raise error
         return figure_to_check
