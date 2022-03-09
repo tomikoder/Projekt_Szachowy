@@ -54,7 +54,7 @@ def validate_moves(request, **kwargs) -> JsonResponse:
                 return JsonResponse(data={'move': None, 'error': 'Destination Field Error\n' + possible_errors[err.num], 'figure': None,  'currentField': None, 'destField': None},
                                     status=409)
             elif isinstance(err, ChessException_7):
-                return JsonResponse(data={'move': None, 'error': possible_errors[7], 'figure': None, 'currentField': None, 'destField': None},
+                return JsonResponse(data={'move': None, 'error': possible_errors[err.num], 'figure': None, 'currentField': None, 'destField': None},
                                     status=404)
             else:
                 JsonResponse(data={'move': None, 'error': possible_errors[err.num], 'figure': None, 'currentField': None, 'destField': None},
@@ -64,7 +64,7 @@ def validate_moves(request, **kwargs) -> JsonResponse:
                 return JsonResponse(data={'move': None, 'error': possible_errors[err.num], 'figure': None,  'currentField': None, 'destField': None},
                                     status=409)
             elif isinstance(err, ChessException_7):
-                return JsonResponse(data={'move': None, 'error': possible_errors[7], 'figure': None, 'currentField': None, 'destField': None},
+                return JsonResponse(data={'move': None, 'error': possible_errors[err.num], 'figure': None, 'currentField': None, 'destField': None},
                                     status=404)
             else:
                 JsonResponse(data={'move': None, 'error': possible_errors[err.num], 'figure': None, 'currentField': None, 'destField': None},
