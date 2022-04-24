@@ -100,7 +100,7 @@ class Figure:
         return self.alphabed[self.field[0]] + str(self.field[1] + 1)
 
     @classmethod
-    def convert_to_chess_notation(cls, x, y) -> str:
+    def convert_to_chess_notation(cls, x: int, y: int) -> str:
         return cls.alphabed[x] + str(y + 1)
 
 
