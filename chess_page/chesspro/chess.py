@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from typing import Tuple, List
-from errors import (
+from .errors import (
     ChessException,
     ChessException_1,
     ChessException_2,
@@ -36,7 +36,7 @@ class Figure():
     position_option = (0, 1, 2, 3, 4, 5, 6, 7)
     colour_options = ('b', 'w')
     alphabed = 'abcdefgh'
-    def __init__(self, field: Tuple[int], colour: str) -> None:
+    def __init__(self, field: Tuple[int, int], colour: str) -> None:
         if (not isinstance(field, tuple) or not len(field) == 2
                 or field[0] not in self.position_option or field[1] not in self.position_option):
             error = ChessException_1(possible_errors[1])
@@ -71,6 +71,11 @@ class Figure():
     def get_possition_in_chess_notation(self) -> str:
         return (self.alphabed[self.field[0]] + str(self.field[1] + 1))
 
+    @classmethod
+    def convert_to_chess_notation(cls, x, y) -> str:
+        return cls.alphabed[x] + str(y + 1)
+
+
 
 class Pawn(Figure):
     '''Pionek'''
@@ -84,30 +89,30 @@ class Pawn(Figure):
             if position_number_in_chess_notation == 2: # początkowa pozycja dla białych
                 field_object = chess_board[letter_position][number_position + 1]
                 if field_object is None or field_object.colour == 'b':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation + 1))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position + 1))
                 field_object = chess_board[letter_position][number_position + 2]
                 if field_object is None or field_object.colour == 'b':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation + 2))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position + 2))
             elif position_number_in_chess_notation == 8:
                 return
             else:
                 field_object = chess_board[letter_position][number_position + 1]
                 if field_object is None or field_object.colour == 'b':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation + 1))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position + 1))
         else:
             if position_number_in_chess_notation == 7: # początkowa pozycja dla czarnych
                 field_object = chess_board[letter_position][number_position - 1]
                 if field_object is None or field_object.colour == 'w':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation - 1))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position - 1))
                 field_object = chess_board[letter_position][number_position - 2]
                 if field_object is None or field_object.colour == 'w':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation - 2))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position - 2))
             elif position_number_in_chess_notation == 1:
                 return
             else:
                 field_object = chess_board[letter_position][number_position - 1]
                 if field_object is None or field_object.colour == 'w':
-                    data.append(self.alphabed[letter_position] + str(position_number_in_chess_notation - 1))
+                    data.append(self.convert_to_chess_notation(letter_position, number_position - 1))
 
     def __str__(self) -> str:
         if self.colour =='w':
@@ -131,7 +136,7 @@ class Rook(Figure):
                 break
             field_object = chess_board[letter_position][counter_y_up]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(letter_position, counter_y_up))
+                data.append(self.convert_to_chess_notation(letter_position, counter_y_up))
                 counter_y_up += 1
             else:
                 break
@@ -140,7 +145,7 @@ class Rook(Figure):
                 break
             field_object = chess_board[letter_position][counter_y_down]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(letter_position, counter_y_down))
+                data.append(self.convert_to_chess_notation(letter_position, counter_y_down))
                 counter_y_down -= 1
             else:
                 break
@@ -151,7 +156,7 @@ class Rook(Figure):
                 break
             field_object = chess_board[counter_x_left][number_position]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(counter_x_left, position_number_in_chess_notation))
+                data.append(self.convert_to_chess_notation(counter_x_left, position_number_in_chess_notation))
                 counter_x_left -= 1
             else:
                 break
@@ -160,7 +165,7 @@ class Rook(Figure):
                 break
             field_object = chess_board[counter_x_right][number_position]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(counter_x_right, position_number_in_chess_notation))
+                data.append(self.convert_to_chess_notation(counter_x_right, position_number_in_chess_notation))
                 counter_x_right += 1
             else:
                 break
@@ -189,7 +194,7 @@ class Knight(Figure):
             else:
                 field_object = chess_board[new_x][new_y]
                 if field_object is None or field_object.colour != self.colour:
-                    data.append(self.get_possition_in_chess_notation(new_x, new_y))
+                    data.append(self.convert_to_chess_notation(new_x, new_y))
 
     def __str__(self):
         if self.colour == 'w':
@@ -211,7 +216,7 @@ class Bishop(Figure):
                 break
             field_object = chess_board[x_counter_right][y_counter_up]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(x_counter_right, y_counter_up))
+                data.append(self.convert_to_chess_notation(x_counter_right, y_counter_up))
                 x_counter_right += 1
                 y_counter_up    += 1
             else:
@@ -223,7 +228,7 @@ class Bishop(Figure):
                 break
             field_object = chess_board[x_counter_left][y_counter_up]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(x_counter_left, y_counter_up))
+                data.append(self.convert_to_chess_notation(x_counter_left, y_counter_up))
                 x_counter_left -= 1
                 y_counter_up   += 1
             else:
@@ -235,7 +240,7 @@ class Bishop(Figure):
                 break
             field_object = chess_board[x_counter_right][y_counter_down]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(x_counter_right, y_counter_down))
+                data.append(self.convert_to_chess_notation(x_counter_right, y_counter_down))
                 x_counter_right += 1
                 y_counter_down  -= 1
             else:
@@ -247,7 +252,7 @@ class Bishop(Figure):
                 break
             field_object = chess_board[x_counter_left][y_counter_down]
             if field_object is None or field_object.colour != self.colour:
-                data.append(self.get_possition_in_chess_notation(x_counter_left, y_counter_down))
+                data.append(self.convert_to_chess_notation(x_counter_left, y_counter_down))
                 x_counter_left -= 1
                 y_counter_down -= 1
             else:
@@ -333,7 +338,7 @@ class Chess_Board():
             raise error
 
     @classmethod
-    def validate_position(cls, position: str) -> Tuple['int']:
+    def validate_position(cls, position: str) -> Tuple[int, int]:
         if len(position) != 2 or not position[0].isalpha or not position[1].isnumeric:
             error = ChessException_4(possible_errors[4])
             raise error
@@ -411,7 +416,7 @@ class Chess_Board():
 
 mapping_index = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
-def get_chess_field(pos: str) -> Tuple[int]:
+def get_chess_field(pos: str) -> Tuple[int, int]:
     '''Podaj stringę np A1, by dostać odpowiednią pozycje figry na szachownicy
     '''
     return Chess_Board.validate_position(pos)
